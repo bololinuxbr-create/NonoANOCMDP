@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mural de Recados — Nono Ano 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .box-postagem {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .upload-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .btn-upload {
+            background-color: transparent;
+            border: 2px dashed var(--azul);
+            color: var(--azul);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-upload:hover {
+            background-color: rgba(44, 160, 214, 0.1);
+        }
+
+        .file-name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .preview-container {
+            display: none;
+            margin-top: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .img-preview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            object-fit: cover;
+        }
+
+        .btn-remover-foto {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--vinho);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .card-post {
+            background-color: var(--bg-modal);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--azul);
+        }
+
+        .card-post.sistema {
+            border-left-color: var(--vinho);
+            background: linear-gradient(145deg, var(--bg-modal), rgba(166, 43, 50, 0.05));
+        }
+
+        .post-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .post-autor { font-weight: 600; color: var(--text-main); font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+        .post-data { font-size: 0.8rem; color: var(--text-muted); }
+        .post-texto { color: var(--text-main); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; }
+        
+        .post-img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <button class="menu-toggle" id="menu-toggle" title="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        
+        <div class="logo-container">
+            <div class="logo-text">NONO <span class="txt-azul">ANO</span></div>
+        </div>
+        
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html#inicio" class="nav-item"><i class="fa-solid fa-house"></i> Início</a>
+            <a href="index.html#evento" class="nav-item"><i class="fa-solid fa-calendar-days"></i> Festa Junina</a>
+            <a href="index.html#mural" class="nav-item"><i class="fa-solid fa-users"></i> Alunos</a>
+            <a href="index.html#videos" class="nav-item"><i class="fa-solid fa-clapperboard"></i> Vídeos</a>
+            <a href="mural.html" class="nav-item" style="color: var(--vinho);"><i class="fa-solid fa-comments"></i> Mural de Recados</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button id="theme-toggle" class="btn-theme" title="Alternar Modo Claro/Escuro">
+                <i class="fa-solid fa-moon icon-theme"></i>
+            </button>
+            <a href="https://www.instagram.com/nono.cmdp2026?igsh=MTZsYjd1NHhkanVucQ==" target="_blank" class="btn-insta-icon" title="Instagram da Turma">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+    </header>
+
+    <section class="mural-interativo-section">
+        <div class="container">
+            <div class="section-header" style="margin-top: 40px;">
+                <h2>Mural de Recados da Turma</h2>
+                <div class="divider"></div>
+                <p class="subtitle">Deixe sua mensagem, adicione fotos marcantes e interaja com o 9º Ano!</p>
+            </div>
+
+            <div class="mural-layout-box">
+                <div class="box-postagem">
+                    <h3 style="color: var(--azul); margin-bottom: 20px;"><i class="fa-solid fa-pen-to-square"></i> Criar uma publicação</h3>
+                    
+                    <div class="form-mural">
+                        <input type="text" id="mural-autor" class="input-mural" placeholder="Seu nome ou apelido..." maxlength="40">
+                        <textarea id="mural-mensagem" class="input-mural" placeholder="Escreva o que está pensando..." maxlength="300"></textarea>
+                        
+                        <div class="upload-container">
+                            <label for="mural-imagem" class="btn-upload" title="Escolher uma foto">
+                                <i class="fa-solid fa-camera"></i> Adicionar Foto
+                            </label>
+                            <input type="file" id="mural-imagem" accept="image/*" style="display: none;">
+                            <span id="file-name-preview" class="file-name">Nenhuma imagem selecionada</span>
+                        </div>
+
+                        <div id="preview-container" class="preview-container" style="display: none;">
+                            <img id="img-preview" class="img-preview" src="" alt="Preview da Foto">
+                            <button id="btn-remover-foto" class="btn-remover-foto" title="Remover Foto"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <button class="btn-enviar-mural" id="btn-postar-mural"><i class="fa-solid fa-paper-plane"></i> Publicar no Feed</button>
+                    </div>
+                </div>
+
+                <div id="feed-mural" class="feed-mural">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="margin-top: 80px;">
+        <p>&copy; 2026 Nono Ano — Colégio Mãe da Divina Providência.</p>
+        <p class="dev-credits">Desenvolvido com maestria por <strong>Enzo Trentin Cezar</strong>.</p>
+    </footer>
+
+    <script>
+        // Lógica do Menu Hambúrguer
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Alternador de Tema
+        const toggleBtn = document.getElementById('theme-toggle');
+        const iconTheme = toggleBtn.querySelector('.icon-theme');
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            iconTheme.className = newTheme === 'light' ? 'fa-solid fa-moon icon-theme' : 'fa-solid fa-sun icon-theme';
+            document.documentElement.setAttribute('data-theme', newTheme);
+        });
+
+        // ----------------------------------------------------
+        // MOTOR DO MURAL COM SUPORTE A IMAGENS
+        // ----------------------------------------------------
+        const containerFeed = document.getElementById('feed-mural');
+        const btnPostar = document.getElementById('btn-postar-mural');
+        const inputImg = document.getElementById('mural-imagem');
+        const imgPreview = document.getElementById('img-preview');
+        const previewContainer = document.getElementById('preview-container');
+        const fileNamePreview = document.getElementById('file-name-preview');
+        const btnRemoverFoto = document.getElementById('btn-remover-foto');
+        
+        let imagemBase64Atual = null;
+
+        // Função para ler a imagem e mostrar o preview
+        inputImg.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileNamePreview.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagemBase64Atual = event.target.result;
+                    imgPreview.src = imagemBase64Atual;
+                    previewContainer.style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file); // Converte a imagem para Base64
+            }
+        });
+
+        // Função para remover a foto antes de postar
+        btnRemoverFoto.addEventListener('click', () => {
+            inputImg.value = '';
+            imagemBase64Atual = null;
+            previewContainer.style.display = 'none';
+            fileNamePreview.textContent = 'Nenhuma imagem selecionada';
+        });
+
+        // Renderizar Feed na tela
+        function renderizarMural() {
+            containerFeed.innerHTML = '';
+            
+            // Post fixo do sistema
+            const postFixo = document.createElement('div');
+            postFixo.className = 'card-post sistema';
+            postFixo.innerHTML = `
+                <div class="post-top">
+                    <span class="post-autor"><i class="fa-solid fa-gavel"></i> Sistema do Portal</span>
+                    <span class="post-data">Aviso Geral</span>
+                </div>
+                <p class="post-texto">Espaço livre para deixar recados, recordações e fotos da turma de 2026! Respeite os colegas.</p>
+            `;
+            containerFeed.appendChild(postFixo);
+
+            // Carrega os posts do LocalStorage
+            const listaPosts = JSON.parse(localStorage.getItem('cmdp_mural_posts')) || [];
+            
+            listaPosts.forEach(post => {
+                const item = document.createElement('div');
+                item.className = 'card-post';
+                
+                // Se o post tiver uma imagem, cria a tag HTML da imagem
+                const tagImagem = post.imagem ? `<img src="${post.imagem}" alt="Foto da postagem" class="post-img">` : '';
+
+                item.innerHTML = `
+                    <div class="post-top">
+                        <span class="post-autor"><i class="fa-solid fa-user-graduate"></i> ${post.autor}</span>
+                        <span class="post-data">${post.data}</span>
+                    </div>
+                    <p class="post-texto">${post.texto}</p>
+                    ${tagImagem}
+                `;
+                containerFeed.appendChild(item);
+            });
+        }
+
+        // Ação de Publicar
+        btnPostar.addEventListener('click', () => {
+            const inputAutor = document.getElementById('mural-autor');
+            const inputMsg = document.getElementById('mural-mensagem');
+            const autor = inputAutor.value.trim();
+            const texto = inputMsg.value.trim();
+
+            if (!autor || (!texto && !imagemBase64Atual)) {
+                alert("Insira seu nome e escreva uma mensagem ou adicione uma foto!");
+                return;
+            }
+
+            const dataAtual = new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+            
+            // Cria o objeto do post com a imagem inclusa
+            const novoPost = { 
+                autor: autor, 
+                texto: texto, 
+                data: dataAtual,
+                imagem: imagemBase64Atual 
+            };
+
+            const bancoLocal = JSON.parse(localStorage.getItem('cmdp_mural_posts')) || [];
+            bancoLocal.unshift(novoPost); // Coloca o novo post no topo
+            localStorage.setItem('cmdp_mural_posts', JSON.stringify(bancoLocal));
+
+            // Limpa o formulário após postar
+            inputMsg.value = '';
+            inputImg.value = '';
+            imagemBase64Atual = null;
+            previewContainer.style.display = 'none';
+            fileNamePreview.textContent = 'Nenhuma imagem selecionada';
+            
+            renderizarMural();
+        });
+
+        // Chama a função ao carregar a página
+        renderizarMural();
+    </script>
+</body>
+</html>
